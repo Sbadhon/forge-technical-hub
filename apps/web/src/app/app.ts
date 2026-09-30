@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+
+import { DocumentsService } from './documents.service';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +10,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './app.scss',
 })
 export class App {
-  private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:3000/api/documents';
+  private readonly documentsService = inject(DocumentsService);
 
   protected readonly documents = signal<
     {
@@ -46,7 +46,7 @@ export class App {
   }
 
   protected createDocument() {
-    this.http.post(this.apiUrl, this.newDocument).subscribe(() => {
+    this.documentsService.create(this.newDocument).subscribe(() => {
       this.newDocument = {
         id: '',
         title: '',
@@ -60,24 +60,8 @@ export class App {
   }
 
   private loadDocuments(search?: string) {
-    let params = new HttpParams();
-
-    const term = search?.trim();
-
-    if (term) {
-      params = params.set('search', term);
-    }
-
-    this.http
-      .get<
-        {
-          id: string;
-          title: string;
-          product: string;
-          type: string;
-          version: string;
-        }[]
-      >(this.apiUrl, { params })
+    this.documentsService
+      .findAll(search)
       .subscribe((documents) => this.documents.set(documents));
   }
 }
