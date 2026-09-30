@@ -23,19 +23,25 @@
     <h2>Find technical information and turn it into action.</h2>
 
     <p class="description">
-      Search engineering documents, trace every answer to its source,
-      and move technical research directly into project workflows.
+      Search engineering documents, trace every answer to its source, and move technical research
+      directly into project workflows.
     </p>
 
-    <div class="search">
+    <form class="search" (ngSubmit)="searchDocuments()">
       <input
         type="search"
+        name="search"
+        [(ngModel)]="searchTerm"
         placeholder="Search technical documents..."
         aria-label="Search technical documents"
       />
 
-      <button type="button">Search</button>
-    </div>
+      @if (searchTerm) {
+        <button class="clear-search" type="button" (click)="clearSearch()">Clear</button>
+      }
+
+      <button type="submit">Search</button>
+    </form>
   </section>
 
   <section class="documents">
@@ -66,40 +72,15 @@
     </div>
 
     <form (ngSubmit)="createDocument()">
-      <input
-        name="id"
-        [(ngModel)]="newDocument.id"
-        placeholder="Document ID"
-        required
-      />
+      <input name="id" [(ngModel)]="newDocument.id" placeholder="Document ID" required />
 
-      <input
-        name="title"
-        [(ngModel)]="newDocument.title"
-        placeholder="Title"
-        required
-      />
+      <input name="title" [(ngModel)]="newDocument.title" placeholder="Title" required />
 
-      <input
-        name="product"
-        [(ngModel)]="newDocument.product"
-        placeholder="Product"
-        required
-      />
+      <input name="product" [(ngModel)]="newDocument.product" placeholder="Product" required />
 
-      <input
-        name="type"
-        [(ngModel)]="newDocument.type"
-        placeholder="Document type"
-        required
-      />
+      <input name="type" [(ngModel)]="newDocument.type" placeholder="Document type" required />
 
-      <input
-        name="version"
-        [(ngModel)]="newDocument.version"
-        placeholder="Version"
-        required
-      />
+      <input name="version" [(ngModel)]="newDocument.version" placeholder="Version" required />
 
       <button type="submit">Add document</button>
     </form>

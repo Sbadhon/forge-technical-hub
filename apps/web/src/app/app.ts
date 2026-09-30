@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -22,6 +22,8 @@ export class App {
     }[]
   >([]);
 
+  protected searchTerm = '';
+
   protected newDocument = {
     id: '',
     title: '',
@@ -31,6 +33,15 @@ export class App {
   };
 
   constructor() {
+    this.loadDocuments();
+  }
+
+  protected searchDocuments() {
+    this.loadDocuments(this.searchTerm);
+  }
+
+  protected clearSearch() {
+    this.searchTerm = '';
     this.loadDocuments();
   }
 
@@ -44,11 +55,19 @@ export class App {
         version: '1.0',
       };
 
-      this.loadDocuments();
+      this.loadDocuments(this.searchTerm);
     });
   }
 
-  private loadDocuments() {
+  private loadDocuments(search?: string) {
+    let params = new HttpParams();
+
+    const term = search?.trim();
+
+    if (term) {
+      params = params.set('search', term);
+    }
+
     this.http
       .get<
         {
@@ -58,7 +77,7 @@ export class App {
           type: string;
           version: string;
         }[]
-      >(this.apiUrl)
+      >(this.apiUrl, { params })
       .subscribe((documents) => this.documents.set(documents));
   }
 }

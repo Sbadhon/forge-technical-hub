@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { DocumentsService } from './documents.service.js';
 
 @Controller('documents')
@@ -6,8 +6,8 @@ export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 
   @Get()
-  findAll() {
-    return this.documentsService.findAll();
+  findAll(@Query('search') search?: string) {
+    return this.documentsService.findAll(search);
   }
 
   @Post()

@@ -226,4 +226,13 @@ h2 {
   .search {
     flex-direction: column;
   }
+
+  .clear-search {
+  background: transparent;
+  color: #59676d;
+
+  &:hover {
+    background: #eef1f2;
+  }
+}
 }

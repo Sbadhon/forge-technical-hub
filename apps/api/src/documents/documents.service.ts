@@ -11,12 +11,27 @@ export class DocumentsService {
     private readonly documentsRepository: Repository<DocumentEntity>,
   ) {}
 
-  findAll() {
-    return this.documentsRepository.find({
-      order: {
-        title: 'ASC',
-      },
-    });
+  findAll(search?: string) {
+    const query = this.documentsRepository
+      .createQueryBuilder('document')
+      .orderBy('document.title', 'ASC');
+
+    const term = search?.trim();
+
+    if (term) {
+      query.where(
+        `
+          document.title ILIKE :search
+          OR document.product ILIKE :search
+          OR document.type ILIKE :search
+        `,
+        {
+          search: `%${term}%`,
+        },
+      );
+    }
+
+    return query.getMany();
   }
 
   create(document: DocumentEntity) {
