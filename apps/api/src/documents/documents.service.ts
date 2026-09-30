@@ -18,4 +18,8 @@ export class DocumentsService {
       },
     });
   }
+
+  create(document: DocumentEntity) {
+    return this.documentsRepository.save(document);
+  }
 }

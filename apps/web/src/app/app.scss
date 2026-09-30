@@ -1,3 +1,136 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f5f7f8;
+  color: #172126;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 3rem;
+  background: #ffffff;
+  border-bottom: 1px solid #dde3e6;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  h1,
+  p {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin-top: 0.15rem;
+    color: #68767d;
+    font-size: 0.8rem;
+  }
+}
+
+.brand-mark {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: #172126;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+nav {
+  display: flex;
+  gap: 2rem;
+
+  a {
+    color: #47545a;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+      color: #172126;
+    }
+  }
+}
+
+.app-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 7rem 2rem;
+}
+
+.hero {
+  max-width: 760px;
+}
+
+.eyebrow {
+  margin-bottom: 1rem;
+  color: #65757c;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+h2 {
+  max-width: 700px;
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.description {
+  max-width: 650px;
+  margin: 1.5rem 0 2.5rem;
+  color: #59676d;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.search {
+  display: flex;
+  max-width: 700px;
+  padding: 0.5rem;
+  background: #ffffff;
+  border: 1px solid #d8dfe2;
+  border-radius: 0.75rem;
+
+  input {
+    flex: 1;
+    padding: 0.9rem;
+    border: 0;
+    outline: 0;
+    font: inherit;
+  }
+
+  button {
+    padding: 0.8rem 1.5rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: #172126;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
 .documents {
   margin-top: 6rem;
 }
@@ -40,4 +173,57 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.document-create {
+  margin-top: 4rem;
+
+  form {
+    display: grid;
+    max-width: 700px;
+    gap: 1rem;
+  }
+
+  input {
+    padding: 0.9rem 1rem;
+    border: 1px solid #d8dfe2;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    font: inherit;
+
+    &:focus {
+      border-color: #9aa8ae;
+      outline: none;
+    }
+  }
+
+  button {
+    width: fit-content;
+    padding: 0.8rem 1.4rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: #172126;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 700px) {
+  .app-header {
+    padding: 1rem 1.25rem;
+  }
+
+  nav {
+    display: none;
+  }
+
+  .app-content {
+    padding: 4rem 1.25rem;
+  }
+
+  .search {
+    flex-direction: column;
+  }
 }

@@ -1,17 +1,107 @@
-<section class="documents">
-  <div class="section-heading">
-    <p class="eyebrow">TECHNICAL LIBRARY</p>
-    <h3>Available documents</h3>
+<header class="app-header">
+  <div class="brand">
+    <span class="brand-mark">F</span>
+
+    <div>
+      <h1>Forge</h1>
+      <p>Technical Operations Hub</p>
+    </div>
   </div>
 
-  <div class="document-grid">
-    @for (document of documents(); track document.id) {
-      <article class="document-card">
-        <p class="document-type">{{ document.type }}</p>
-        <h4>{{ document.title }}</h4>
-        <p>{{ document.product }}</p>
-        <span>Version {{ document.version }}</span>
-      </article>
-    }
-  </div>
-</section>
+  <nav>
+    <a href="/">Library</a>
+    <a href="/">Projects</a>
+    <a href="/">Producers</a>
+    <a href="/">Analytics</a>
+  </nav>
+</header>
+
+<main class="app-content">
+  <section class="hero">
+    <p class="eyebrow">ENGINEERING KNOWLEDGE</p>
+
+    <h2>Find technical information and turn it into action.</h2>
+
+    <p class="description">
+      Search engineering documents, trace every answer to its source,
+      and move technical research directly into project workflows.
+    </p>
+
+    <div class="search">
+      <input
+        type="search"
+        placeholder="Search technical documents..."
+        aria-label="Search technical documents"
+      />
+
+      <button type="button">Search</button>
+    </div>
+  </section>
+
+  <section class="documents">
+    <div class="section-heading">
+      <p class="eyebrow">TECHNICAL LIBRARY</p>
+      <h3>Available documents</h3>
+    </div>
+
+    <div class="document-grid">
+      @for (document of documents(); track document.id) {
+        <article class="document-card">
+          <p class="document-type">{{ document.type }}</p>
+
+          <h4>{{ document.title }}</h4>
+
+          <p>{{ document.product }}</p>
+
+          <span>Version {{ document.version }}</span>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="document-create">
+    <div class="section-heading">
+      <p class="eyebrow">DOCUMENT MANAGEMENT</p>
+      <h3>Add document</h3>
+    </div>
+
+    <form (ngSubmit)="createDocument()">
+      <input
+        name="id"
+        [(ngModel)]="newDocument.id"
+        placeholder="Document ID"
+        required
+      />
+
+      <input
+        name="title"
+        [(ngModel)]="newDocument.title"
+        placeholder="Title"
+        required
+      />
+
+      <input
+        name="product"
+        [(ngModel)]="newDocument.product"
+        placeholder="Product"
+        required
+      />
+
+      <input
+        name="type"
+        [(ngModel)]="newDocument.type"
+        placeholder="Document type"
+        required
+      />
+
+      <input
+        name="version"
+        [(ngModel)]="newDocument.version"
+        placeholder="Version"
+        required
+      />
+
+      <button type="submit">Add document</button>
+    </form>
+  </section>
+</main>
