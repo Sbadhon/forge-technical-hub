@@ -16,4 +16,19 @@ export class DocumentEntity {
 
   @Column({ type: 'varchar', length: 50 })
   version!: string;
+
+  @Column({ name: 'original_name', type: 'varchar', length: 255, nullable: true })
+  originalName!: string | null;
+
+  @Column({ name: 'stored_filename', type: 'varchar', length: 255, nullable: true })
+  storedFilename!: string | null;
+
+  @Column({ name: 'file_path', type: 'varchar', length: 500, nullable: true })
+  filePath!: string | null;
+
+  @Column({ name: 'file_size', type: 'bigint', nullable: true })
+  fileSize!: string | null;
+
+  @Column({ name: 'mime_type', type: 'varchar', length: 100, nullable: true })
+  mimeType!: string | null;
 }

@@ -34,7 +34,9 @@ export class DocumentsService {
     return query.getMany();
   }
 
-  create(document: DocumentEntity) {
-    return this.documentsRepository.save(document);
+  create(document: Partial<DocumentEntity>) {
+    return this.documentsRepository.save(
+      this.documentsRepository.create(document),
+    );
   }
 }

@@ -56,13 +56,24 @@ export class DocumentsController {
       },
     }),
   )
-  upload(@UploadedFile() file: Express.Multer.File) {
-    return {
+  upload(
+    @UploadedFile() file: Express.Multer.File,
+    @Body()
+    metadata: {
+      id: string;
+      title: string;
+      product: string;
+      type: string;
+      version: string;
+    },
+  ) {
+    return this.documentsService.create({
+      ...metadata,
       originalName: file.originalname,
-      filename: file.filename,
-      path: file.path,
-      size: file.size,
+      storedFilename: file.filename,
+      filePath: file.path,
+      fileSize: file.size.toString(),
       mimeType: file.mimetype,
-    };
+    });
   }
 }
