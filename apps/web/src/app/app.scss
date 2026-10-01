@@ -8,7 +8,7 @@
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    'Segoe UI',
     sans-serif;
 }
 
@@ -228,11 +228,61 @@ h2 {
   }
 
   .clear-search {
-  background: transparent;
-  color: #59676d;
+    background: transparent;
+    color: #59676d;
 
-  &:hover {
-    background: #eef1f2;
+    &:hover {
+      background: #eef1f2;
+    }
   }
-}
+
+  .selected-file {
+    margin: 0;
+    color: #59676d;
+    font-size: 0.9rem;
+  }
+
+  .file-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e4e8ea;
+
+    span {
+      color: #6b787e;
+      font-size: 0.8rem;
+    }
+  }
+
+  .document-create button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .selected-file {
+    margin: 0;
+    color: #59676d;
+    font-size: 0.9rem;
+  }
+
+  .file-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e4e8ea;
+
+    span {
+      color: #6b787e;
+      font-size: 0.8rem;
+    }
+  }
+
+  .document-create button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }

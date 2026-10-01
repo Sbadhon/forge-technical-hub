@@ -34,7 +34,31 @@ export class DocumentsService {
     product: string;
     type: string;
     version: string;
+    originalName?: string | null;
+    fileSize?: string | null;
   }) {
     return this.http.post(this.apiUrl, document);
+  }
+
+  upload(
+    file: File,
+    metadata: {
+      id: string;
+      title: string;
+      product: string;
+      type: string;
+      version: string;
+    },
+  ) {
+    const formData = new FormData();
+
+    formData.append('file', file);
+    formData.append('id', metadata.id);
+    formData.append('title', metadata.title);
+    formData.append('product', metadata.product);
+    formData.append('type', metadata.type);
+    formData.append('version', metadata.version);
+
+    return this.http.post(`${this.apiUrl}/upload`, formData);
   }
 }

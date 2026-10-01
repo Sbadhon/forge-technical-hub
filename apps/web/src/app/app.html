@@ -60,6 +60,15 @@
           <p>{{ document.product }}</p>
 
           <span>Version {{ document.version }}</span>
+          @if (document.originalName) {
+            <div class="file-meta">
+              <span>{{ document.originalName }}</span>
+
+              @if (document.fileSize) {
+                <span>{{ document.fileSize }} bytes</span>
+              }
+            </div>
+          }
         </article>
       }
     </div>
@@ -68,10 +77,10 @@
   <section class="document-create">
     <div class="section-heading">
       <p class="eyebrow">DOCUMENT MANAGEMENT</p>
-      <h3>Add document</h3>
+      <h3>Upload technical document</h3>
     </div>
 
-    <form (ngSubmit)="createDocument()">
+    <form (ngSubmit)="uploadDocument()">
       <input name="id" [(ngModel)]="newDocument.id" placeholder="Document ID" required />
 
       <input name="title" [(ngModel)]="newDocument.title" placeholder="Title" required />
@@ -82,7 +91,13 @@
 
       <input name="version" [(ngModel)]="newDocument.version" placeholder="Version" required />
 
-      <button type="submit">Add document</button>
+      <input type="file" accept="application/pdf" (change)="selectFile($event)" required />
+
+      @if (selectedFile) {
+        <p class="selected-file">Selected: {{ selectedFile.name }}</p>
+      }
+
+      <button type="submit" [disabled]="!selectedFile">Upload document</button>
     </form>
   </section>
 </main>

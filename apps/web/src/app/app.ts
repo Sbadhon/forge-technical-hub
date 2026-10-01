@@ -10,6 +10,7 @@ import { DocumentsService } from './documents.service';
   styleUrl: './app.scss',
 })
 export class App {
+  protected selectedFile: File | null = null;
   private readonly documentsService = inject(DocumentsService);
 
   protected readonly documents = signal<
@@ -19,6 +20,8 @@ export class App {
       product: string;
       type: string;
       version: string;
+      originalName?: string | null;
+      fileSize?: string | null;
     }[]
   >([]);
 
@@ -60,8 +63,32 @@ export class App {
   }
 
   private loadDocuments(search?: string) {
-    this.documentsService
-      .findAll(search)
-      .subscribe((documents) => this.documents.set(documents));
+    this.documentsService.findAll(search).subscribe((documents) => this.documents.set(documents));
+  }
+
+  protected selectFile(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    this.selectedFile = input.files?.[0] ?? null;
+  }
+
+  protected uploadDocument() {
+    if (!this.selectedFile) {
+      return;
+    }
+
+    this.documentsService.upload(this.selectedFile, this.newDocument).subscribe(() => {
+      this.selectedFile = null;
+
+      this.newDocument = {
+        id: '',
+        title: '',
+        product: '',
+        type: '',
+        version: '1.0',
+      };
+
+      this.loadDocuments();
+    });
   }
 }
