@@ -42,6 +42,11 @@ export class DocumentEntity {
   @Column({ name: 'mime_type', type: 'varchar', length: 100, nullable: true })
   mimeType!: string | null;
 
-  @Column({ name: 'extracted_text', type: 'text', nullable: true })
+  @Column({
+    name: 'extracted_text',
+    type: 'text',
+    nullable: true,
+    select: false,
+  })
   extractedText!: string | null;
 }
