@@ -10,7 +10,8 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'node:path';
-
+import { readFile } from 'node:fs/promises';
+import { PDFParse } from 'pdf-parse';
 import { DocumentsService } from './documents.service.js';
 
 @Controller('documents')
@@ -56,7 +57,7 @@ export class DocumentsController {
       },
     }),
   )
-  upload(
+  async upload(
     @UploadedFile() file: Express.Multer.File,
     @Body()
     metadata: {
@@ -67,13 +68,26 @@ export class DocumentsController {
       version: string;
     },
   ) {
-    return this.documentsService.create({
-      ...metadata,
-      originalName: file.originalname,
-      storedFilename: file.filename,
-      filePath: file.path,
-      fileSize: file.size.toString(),
-      mimeType: file.mimetype,
+    const buffer = await readFile(file.path);
+
+    const parser = new PDFParse({
+      data: buffer,
     });
+
+    try {
+      const result = await parser.getText();
+
+      return this.documentsService.create({
+        ...metadata,
+        originalName: file.originalname,
+        storedFilename: file.filename,
+        filePath: file.path,
+        fileSize: file.size.toString(),
+        mimeType: file.mimetype,
+        extractedText: result.text,
+      });
+    } finally {
+      await parser.destroy();
+    }
   }
 }

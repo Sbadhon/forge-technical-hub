@@ -9,10 +9,10 @@
   </div>
 
   <nav>
-    <a href="/">Library</a>
-    <a href="/">Projects</a>
-    <a href="/">Producers</a>
-    <a href="/">Analytics</a>
+    <a href="#library">Library</a>
+    <a href="#projects">Projects</a>
+    <a href="#producers">Producers</a>
+    <a href="#analytics">Analytics</a>
   </nav>
 </header>
 
@@ -37,67 +37,127 @@
       />
 
       @if (searchTerm) {
-        <button class="clear-search" type="button" (click)="clearSearch()">Clear</button>
+        <button class="secondary-button" type="button" (click)="clearSearch()">Clear</button>
       }
 
       <button type="submit">Search</button>
     </form>
   </section>
 
-  <section class="documents">
+  <section id="library" class="documents">
     <div class="section-heading">
-      <p class="eyebrow">TECHNICAL LIBRARY</p>
-      <h3>Available documents</h3>
+      <div>
+        <p class="eyebrow">TECHNICAL LIBRARY</p>
+        <h3>Available documents</h3>
+      </div>
+
+      <span class="document-count"> {{ documents().length }} documents </span>
     </div>
 
     <div class="document-grid">
       @for (document of documents(); track document.id) {
         <article class="document-card">
-          <p class="document-type">{{ document.type }}</p>
+          <div class="document-card-header">
+            <span class="document-type">{{ document.type }}</span>
+            <span class="version">v{{ document.version }}</span>
+          </div>
 
           <h4>{{ document.title }}</h4>
 
-          <p>{{ document.product }}</p>
+          <p class="product">{{ document.product }}</p>
 
-          <span>Version {{ document.version }}</span>
           @if (document.originalName) {
             <div class="file-meta">
-              <span>{{ document.originalName }}</span>
+              <span class="file-name">
+                {{ document.originalName }}
+              </span>
 
               @if (document.fileSize) {
-                <span>{{ document.fileSize }} bytes</span>
+                <span> {{ document.fileSize }} bytes </span>
               }
             </div>
           }
         </article>
+      } @empty {
+        <div class="empty-state">
+          <h4>No documents found</h4>
+          <p>Try another search or upload a technical document.</p>
+        </div>
       }
     </div>
   </section>
 
   <section class="document-create">
     <div class="section-heading">
-      <p class="eyebrow">DOCUMENT MANAGEMENT</p>
-      <h3>Upload technical document</h3>
+      <div>
+        <p class="eyebrow">DOCUMENT MANAGEMENT</p>
+        <h3>Upload technical document</h3>
+      </div>
     </div>
 
-    <form (ngSubmit)="uploadDocument()">
-      <input name="id" [(ngModel)]="newDocument.id" placeholder="Document ID" required />
+    <form
+      #uploadForm="ngForm"
+      class="upload-form"
+      (ngSubmit)="uploadForm.valid && uploadDocument()"
+    >
+      <div class="form-grid">
+        <label>
+          <span>Document ID</span>
+          <input name="id" [(ngModel)]="newDocument.id" placeholder="recon-design-guide" required />
+        </label>
 
-      <input name="title" [(ngModel)]="newDocument.title" placeholder="Title" required />
+        <label>
+          <span>Version</span>
+          <input name="version" [(ngModel)]="newDocument.version" placeholder="1.0" required />
+        </label>
 
-      <input name="product" [(ngModel)]="newDocument.product" placeholder="Product" required />
+        <label class="full-width">
+          <span>Title</span>
+          <input
+            name="title"
+            [(ngModel)]="newDocument.title"
+            placeholder="Retaining Wall Design Guide"
+            required
+          />
+        </label>
 
-      <input name="type" [(ngModel)]="newDocument.type" placeholder="Document type" required />
+        <label>
+          <span>Product</span>
+          <input
+            name="product"
+            [(ngModel)]="newDocument.product"
+            placeholder="Recon Wall Systems"
+            required
+          />
+        </label>
 
-      <input name="version" [(ngModel)]="newDocument.version" placeholder="Version" required />
+        <label>
+          <span>Document type</span>
+          <input name="type" [(ngModel)]="newDocument.type" placeholder="Design Guide" required />
+        </label>
+      </div>
 
-      <input type="file" accept="application/pdf" (change)="selectFile($event)" required />
+      <div class="file-upload">
+        <label for="document-file">PDF document</label>
 
-      @if (selectedFile) {
-        <p class="selected-file">Selected: {{ selectedFile.name }}</p>
-      }
+        <input
+          id="document-file"
+          type="file"
+          accept="application/pdf"
+          (change)="selectFile($event)"
+          required
+        />
 
-      <button type="submit" [disabled]="!selectedFile">Upload document</button>
+        @if (selectedFile) {
+          <p class="selected-file">
+            {{ selectedFile.name }}
+          </p>
+        }
+      </div>
+
+      <button type="submit" [disabled]="uploadForm.invalid || !selectedFile">
+        Upload document
+      </button>
     </form>
   </section>
 </main>

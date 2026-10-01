@@ -21,9 +21,10 @@ export class DocumentsService {
     if (term) {
       query.where(
         `
-          document.title ILIKE :search
-          OR document.product ILIKE :search
-          OR document.type ILIKE :search
+            document.title ILIKE :search
+            OR document.product ILIKE :search
+            OR document.type ILIKE :search
+            OR document.extractedText ILIKE :search
         `,
         {
           search: `%${term}%`,
