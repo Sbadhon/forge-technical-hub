@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 import { DocumentsService } from './documents.service';
 
@@ -10,8 +10,9 @@ import { DocumentsService } from './documents.service';
   styleUrl: './app.scss',
 })
 export class App {
-  protected selectedFile: File | null = null;
   private readonly documentsService = inject(DocumentsService);
+
+  protected selectedFile: File | null = null;
 
   protected readonly documents = signal<
     {
@@ -27,13 +28,7 @@ export class App {
 
   protected searchTerm = '';
 
-  protected newDocument = {
-    id: '',
-    title: '',
-    product: '',
-    type: '',
-    version: '1.0',
-  };
+  protected newDocument = this.createEmptyDocument();
 
   constructor() {
     this.loadDocuments();
@@ -48,47 +43,52 @@ export class App {
     this.loadDocuments();
   }
 
-  protected createDocument() {
-    this.documentsService.create(this.newDocument).subscribe(() => {
-      this.newDocument = {
-        id: '',
-        title: '',
-        product: '',
-        type: '',
-        version: '1.0',
-      };
-
-      this.loadDocuments(this.searchTerm);
-    });
-  }
-
-  private loadDocuments(search?: string) {
-    this.documentsService.findAll(search).subscribe((documents) => this.documents.set(documents));
-  }
-
   protected selectFile(event: Event) {
     const input = event.target as HTMLInputElement;
 
     this.selectedFile = input.files?.[0] ?? null;
   }
 
-  protected uploadDocument() {
-    if (!this.selectedFile) {
+  protected canUpload() {
+    return (
+      this.selectedFile !== null &&
+      this.newDocument.id.trim() !== '' &&
+      this.newDocument.title.trim() !== '' &&
+      this.newDocument.product.trim() !== '' &&
+      this.newDocument.type.trim() !== '' &&
+      this.newDocument.version.trim() !== ''
+    );
+  }
+
+  protected uploadDocument(uploadForm: NgForm, fileInput: HTMLInputElement) {
+    if (!this.canUpload() || !this.selectedFile) {
       return;
     }
 
     this.documentsService.upload(this.selectedFile, this.newDocument).subscribe(() => {
-      this.selectedFile = null;
+      const resetDocument = this.createEmptyDocument();
 
-      this.newDocument = {
-        id: '',
-        title: '',
-        product: '',
-        type: '',
-        version: '1.0',
-      };
+      this.newDocument = resetDocument;
+      this.selectedFile = null;
+      fileInput.value = '';
+
+      uploadForm.resetForm(resetDocument);
 
       this.loadDocuments();
     });
+  }
+
+  private createEmptyDocument() {
+    return {
+      id: '',
+      title: '',
+      product: '',
+      type: '',
+      version: '1.0',
+    };
+  }
+
+  private loadDocuments(search?: string) {
+    this.documentsService.findAll(search).subscribe((documents) => this.documents.set(documents));
   }
 }
